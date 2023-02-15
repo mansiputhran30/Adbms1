@@ -1,0 +1,61 @@
+/*create a type*/
+create type book_type as object
+(
+    ISBNo number(4),
+    Title varchar2(30),
+    Author varchar2(20)
+)
+
+/*create table*/
+create table purchase
+(
+    pid number,
+    book book_type,
+    pdate date,
+    amount number
+)
+
+/*insert values*/
+insert into purchase values(1, book_type(101,'Data Mining','Han'),'21-Jan-2015',575);
+insert into purchase values(2, book_type(102,'Object Database','Silberschatz'),'21-Feb-2015',975);
+insert into purchase values(3, book_type(103,'DBMS','Raghu Ramakrishnan'),'11-March-2015',675);
+insert into purchase values(4, book_type(104,'DBMS','Korth'),'21-May-2015',875);
+insert into purchase values(5, book_type(105,'Data Warehousing','Paulraj Ponniah'),'11-April-2015',670);
+
+/*to display data of table we will not use select * from purchase instead we will use-*/
+select pid,p.book.isbno,p.book.title,p.book.author,pdate,amount from purchase p;
+
+/*condition- having amount > 600*/
+select pid,p.book.isbno,p.book.title,p.book.author,pdate,amount from purchase p where amount>600;
+
+/*update query*/
+update purchase p set p.book.author='Han and Kamber' where p.book.title='Data Mining';
+
+update purchase set amount='675' where pid='1';
+
+/*Nested type*/
+Create type Addr_type as Object
+(
+ Street varchar2(20),
+ city varchar(20),
+ pincode number
+);
+
+create type person_type as object
+(
+ name varchar2(20),
+ address Addr_type
+);
+
+create table customer
+(
+ cid number,
+ person person_type
+);
+
+insert into customer values(1001,person_type('Akash',Addr_type('Kanakia','Mumbai',401107)));
+insert into customer values(1002,person_type('Mokshita',Addr_type('MG Road','Chennai',401107)));
+
+select cid,c.person.name,c.person.address.Street,c.person.address.city,c.person.address.pincode from customer c;
+
+delete from customer c where c.person.address.city='Chennai';
