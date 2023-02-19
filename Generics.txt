@@ -1,0 +1,184 @@
+//basic generics program
+package edu.met.p1;
+
+public class Shape<T> {
+	private T t;
+
+	public void add(T t) {
+		this.t = t;
+	}
+
+	public T get() {
+		return t;
+	}
+
+	public static void main(String[] args) {
+		Shape<Integer> intShape = new Shape<Integer>();
+		Shape<String> strShape = new Shape<String>();
+
+		intShape.add(new Integer(25));
+		strShape.add(new String("Generic Classes"));
+		System.out.printf("Integer Value :%d\n\n", intShape.get());
+		System.out.printf("String Value :%s\n", strShape.get());
+	}
+}
+
+//generics- print data type passed
+package edu.met.p1;
+
+public class Shape {
+	public static <T> void print(T t)
+	{ 
+		System.out.println(t.getClass().getName());
+	}
+
+	public static void main(String[] args) {
+		Shape.print("Hello World");;
+		Shape.print(100);
+	}
+}
+
+//generics- print array of different type usin single generic method
+
+package edu.met.p1;
+
+public class Shape {
+	public static <T> void printArray(T[] i) {
+		// Display array elements
+		for (T element : i) {
+			System.out.printf("%s ", element);
+		}
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		// Create arrays of Integer, Double and Character
+		Integer[] intArray = { 1, 2, 3, 4, 5 };
+		Double[] doubleArray = { 1.1, 2.2, 3.3, 4.4 };
+		Character[] charArray = { 'H', 'E', 'L', 'L', 'O' };
+		System.out.println("Array integerArray contains:");
+		printArray(intArray); // pass an Integer array
+		System.out.println("\nArray doubleArray contains:");
+		printArray(doubleArray); // pass a Double array
+		System.out.println("\nArray characterArray contains:");
+		printArray(charArray); // pass a Character array
+	}
+}
+
+
+//Bounded type parameters
+
+package edu.met.p1;
+
+public class Test<T extends Number> {
+	T[] numArr;
+
+	public Test(T[] numArr) {
+		this.numArr = numArr;
+	}
+
+	public double getAvg() {
+		double sum = 0.0;
+		for (int i = 0; i < numArr.length; i++) {
+			sum += numArr[i].doubleValue();
+		}
+		double avg = sum / numArr.length;
+		return avg;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Integer i1[] = { 12, 13, 14, 15, 16 };
+		Double d[] = { 1.0, 2.0, 3.0, 4.0 };
+		Test<Integer> e1 = new Test<Integer>(i1);
+		Test<Double> e2 = new Test<Double>(d);
+		double ai = e1.getAvg();
+		Double ad = e2.getAvg();
+		System.out.println("Average of Integers = " + ai);
+		System.out.println("Average of Double =" + ad);
+	}
+
+}
+
+
+//upper bounded wildcards
+package edu.met.p1;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class UpperBoundedWildcardDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		List<Integer> list1 = Arrays.asList(4, 5, 6, 7);
+
+		// printing the sum of elements in list1
+		System.out.println("Total sum is:" + sum(list1));
+		// Upper Bounded Double list
+		List<Double> list2 = Arrays.asList(4.1, 5.1, 6.1);
+		// printing the sum of elements in list2
+		System.out.print("Total sum is:" + sum(list2));
+	}
+
+	private static double sum(List<? extends Number> list) {
+		double sum = 0.0;
+		for (Number i : list) {
+			sum += i.doubleValue();
+		}
+		return sum;
+	}
+}
+
+
+//lower bounded wildcards
+package edu.met.p1;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LowerBoundedWildcardDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// Lower Bounded Integer List
+		List<Integer> list1 = Arrays.asList(1, 2, 3, 4);
+		// Integer list object is being passed
+		print(list1);
+		// Lower Bounded Number list
+		List<Number> list2 = Arrays.asList(1, 2, 3, 4);
+		// Integer list object is being passed
+		print(list2);
+	}
+	public static void print(List<? super Integer> list) {
+		 System.out.println(list);
+		 }
+}
+
+//unbounded wildcards
+
+import java.util.Arrays;
+import java.util.List;
+public class UnboundedWildcardDemo {
+ public static void printList(List<?> list) {
+ 	for (Object elem : list) {
+ 		System.out.println(elem + " ");
+ 	}
+ 	System.out.println();
+ }
+ public static void main(String args[]) {
+ 	List<Integer> li = Arrays.asList(1, 2, 3);
+ 	List<String> ls = Arrays.asList("one", "two", "three");
+ 	printList(li);
+ 	printList(ls);
+ }
+}
+
+
+
+
+
+
+
+
+
