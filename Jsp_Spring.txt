@@ -1,0 +1,606 @@
+			JSP
+======================================================================
+1) Create a Telephone Directory and Store all data in a database
+======================================================================
+
+Telephone.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8" import="java.io.*"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Telephone Directory</title>
+<sql:setDataSource var="myDS" driver="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/postgres" user="postgres" password="password" scope="application"></sql:setDataSource>
+</head>
+<body>
+<form method="post" method=”controller.jsp”>
+<h1>Telephone Directory</h1>
+	<input type="text" name="name" placeholder="Enter name"/><br>
+	<input type="number" name="telno" placeholder="Enter Telephone No"/>
+	<input type="submit" name="submit"/>
+</form>
+<sql:query var="myQ1" dataSource="${myDS}">Select * from TelDir;</sql:query>
+	<c:forEach var="result" items="${myQ1.rows}">
+		<c:out value="${result.telid}"/><br>
+		<c:out value="${result.telname}"/><br>
+		<c:out value="${result.telno}"/><br>
+	</c:forEach>
+</body>
+</html>
+—-----------------------------------------------------------------------------------------------------------------
+
+Controller.jsp:
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<sql:update dataSource="${myDS}">Insert into TelDir (telname, telno) values('<%=request.getParameter("name")%>', '<%=request.getParameter("telno")%>');</sql:update>
+<jsp:forward page="Telephone.jsp"></jsp:forward>
+</body>
+</html>
+
+
+
+
+
+
+PostGreSql
+Create table teldir (telid SERIAL PRIMARY KEY,
+telname varchar(30)d,
+telno varchar(30))
+
+select  * from teldir 
+
+======================================================================
+
+2) demonstrate use of  jsp directives, header , footer , scriplet, expressions, declaration and  display a registration form (Make your own assumptions)
+======================================================================
+Registration.jsp:
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Registration Page</title>
+</head>
+<body>
+<jsp:include page="Header.jsp"/>
+<h1>Registration Form</h1>
+<form method="post" action="Controller.jsp">
+Enter Name:
+<input type="text" name="sname"/><br>
+Enter Roll No:
+<input type="number" name="roll"/><br>
+Enter EmailID:
+<input type="email" name="email"/><br>
+Enter Password:
+<input type="password" name="pass"/><br>
+<input type="submit" name="submit"/>
+<input type="reset" name="reset"/>
+</form>
+<jsp:include page="Footer.jsp"/>
+</body>
+</html>
+—------------------------------------------------------------------------------------------------------------------------
+Controller.jsp:
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8" errorPage="errorpage.jsp"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<sql:setDataSource var="myDS" user="postgres" driver="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/postgres" password="password" scope="page"></sql:setDataSource>
+</head>
+<body>
+	<sql:update dataSource="${myDS}">insert into register values(<%=Integer.parseInt(request.getParameter("roll"))%>, '<%=request.getParameter("sname")%>', '<%=request.getParameter("email")%>', '<%=request.getParameter("pass")%>');</sql:update>
+	<jsp:forward page="Welcome.jsp"/>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Errorpage.jsp:
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8" isErrorPage="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+Faced an uncommon error LMAO
+<%= exception %>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+header .jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Welcome to Madhav.inc Feel free to travel around in this limited Setting.</h1>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Footer.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+@Copyright Madhav.inc 2023 All rights reserved
+</body>
+</htm
+
+
+—-------------------------------------------------------------------------------------------------------------
+Welcome.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	Welcome <%=request.getParameter("sname") %>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+PostgreSql:
+Create table:
+select * from resister;
+================================================================
+3) write a jsp program to add, delete and display the records from studentMaster table(roll no, name, course , semester)
+================================================================
+Studentinfo.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Registration</title>
+<sql:setDataSource var="myDS" driver="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/postgres" user="postgres" password="password" scope="application"></sql:setDataSource>
+</head>
+<body>
+<h1>Student Information</h1>
+<form action="cont.jsp">
+	Name:
+	<input type="text" name="sname"/><br>
+	Roll No:
+	<input type="number" name="sroll"/><br>
+	Course:
+	<input type="text" name="cname"/><br>
+	Semester:
+	<input type="number" name="sem"/><br>
+	<input type="submit" name="submit" value="Add"/>
+	<input type="submit" value="Update" onclick="form.action='update.jsp';">
+	<input type="submit" value="Delete" onclick="form.action='delete.jsp';">
+	</form>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Update.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<sql:update dataSource="${myDS}">update studMaster set sname = '<%=request.getParameter("sname") %>', course = '<%=request.getParameter("cname") %>', semester = '<%=request.getParameter("sem") %>' where rollno = '<%=request.getParameter("sroll") %>';</sql:update>
+<jsp:forward page="Studentinfo.jsp"></jsp:forward>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Delete.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<sql:update dataSource="${myDS}">delete from studMaster where rollno = '<%= request.getParameter("sroll")%>';</sql:update>
+<jsp:forward page="Studentinfo.jsp"/>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Cont.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<sql:update dataSource="${myDS}">Insert into studMaster values('<%=request.getParameter("sroll") %>', '<%=request.getParameter("sname") %>', '<%=request.getParameter("cname") %>', '<%=request.getParameter("sem") %>');</sql:update>
+<jsp:forward page="Studentinfo.jsp"></jsp:forward>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+PostGreSql:
+
+
+================================================================
+4) Create a JSP page to let a student change study centre. Make your own assumptions
+================================================================
+sc.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Totally Not a scam center.org</title>
+</head>
+<body>
+	<form action = "cont.jsp">
+	Enter Roll No:
+	<input type="number" name="roll"> <br>
+	Enter Name:
+	<input type="text" name ="sname"> <br>
+	Enter Study Center:
+	<input type ="text" name = "study"><br>
+	<input type="submit" name="submit"><input type="submit" name="update" value ="update" onclick="form.action='update.jsp'">
+	</form>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Cont.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<sql:setDataSource var = "myDS" driver = "org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/postgres" user ="postgres" password = "password" scope="page"></sql:setDataSource>
+	<sql:update var="myQ" dataSource="${myDS}">insert into sc values(<%=request.getParameter("roll") %>, '<%=request.getParameter("sname") %>', '<%=request.getParameter("study") %>')</sql:update>
+	<jsp:forward page="sc.jsp"></jsp:forward>
+</body>
+</html>
+—-------------------------------------------------------------------------------------------------------------
+Update.jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<sql:setDataSource var = "myDS" driver = "org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/postgres" user ="postgres" password = "password" scope="page"></sql:setDataSource>
+	<sql:update var="myQ" dataSource="${myDS}">update sc set name = '<%=request.getParameter("sname") %>' , center = '<%=request.getParameter("study") %>' where roll = <%=request.getParameter("roll") %>;</sql:update>
+	<jsp:forward page="sc.jsp"></jsp:forward>
+</body>
+</html>
+======================================================================
+			Spring
+======================================================================
+Write a spirng boot applicatio to print Hello World
+======================================================================
+Madhav1Application.java:
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class Madhav1Application {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(Madhav1Application.class, args);
+		Test t = ctx.getBean(Test.class);
+		t.setId(1);
+		t.setUser("Madhav");
+		t.display();
+	}
+
+}
+—-------------------------------------------------------------------------------------------------------------
+Test.java:
+package com.example.demo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Test {
+	Test() {
+		
+	}
+	private int id;
+	private String user;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public void display() {
+		System.out.println("Hello World!");
+	}
+}
+======================================================================
+Write a program to show dependency injection via setter method
+======================================================================
+
+SetterInjection.java:
+
+package com.example.demo;
+import org.springframework.stereotype.Component;
+@Component
+public class SetterInjection {
+	private int userID;
+	private String userName;
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public void display() {
+		System.out.println("user ID: " + this.userID + "\n User Name: " + this.userName);
+	}
+}
+—-------------------------------------------------------------------------------------------------------------
+SetterInjectionApplication.java:
+
+package com.example.demo;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SetterApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(SetterApplication.class, args);
+		SetterInjection si = ctx.getBean(SetterInjection.class);
+		si.setUserID(101);
+		si.setUserName("Madhav Moole");
+		si.display();
+	}
+
+}
+======================================================================
+Show Circular Dependency in Spring
+======================================================================
+Teacher.java:
+
+package com.example.demo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+@Component
+public class Teacher {
+	private int id;
+	private String name;
+	private MotivationalQuotes mq;
+	
+	@Autowired
+	public Teacher() {
+		
+	}
+	public Teacher(@Lazy MotivationalQuotes mq) {
+		this.mq = mq;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+—-------------------------------------------------------------------------------------------------------------
+MotivationalQuotes.java:
+
+package com.example.demo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MotivationalQuotes {
+	@Autowired
+	private Teacher t;
+	MotivationalQuotes(@Lazy Teacher t) {
+		this.t = t;
+	}
+	
+}
+—-------------------------------------------------------------------------------------------------------------
+CircularDependencyApplication.java:
+
+package com.example.demo;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class CircularDependencyApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx  = SpringApplication.run(CircularDependencyApplication.class, args);
+		Teacher t1 = ctx.getBean(Teacher.class);
+		t1.setId(1);
+		t1.setName("Madhav");
+		System.out.println(t1.getId() + " " + t1.getName());
+	}
+
+}
+======================================================================
+Show Constructor Injection in Spring:
+======================================================================
+Constructor.java:
+
+package com.example.demo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Constructor {
+	private int id;
+	private String name;
+	
+	@Autowired
+	Constructor() {
+		
+	}
+	Constructor(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public void display() {
+		System.out.println("ID: " + this.id + "\nName: " + this.name);
+	}
+}
+—-------------------------------------------------------------------------------------------------------------
+ConstructorDependencyApplication.java:
+
+package com.example.demo;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class ConstructorInjectionApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(ConstructorInjectionApplication.class, args);
+		Constructor c = (Constructor)ctx.getBean(Constructor.class);
+		c = new Constructor(101, "Madhav");
+		c.display();
+	}
+
+}
+
+
+--------------------------------------------------------------------------------------------------------------------
+B) Design loan calculator using JSP which accepts period of Time(in year) and principle
+Loan Amount.
+NewFile.jsp
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<form action="Controller.jsp" method="post">
+<body>
+Period of Time:<input type="text" name="t1" /><br>
+Loan Amount:<input type="text" name="t2" /><br>
+<input type="submit" name="Submit" value="submit" />
+</body>
+</form>
+</html>
+Controller.jsp
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<%!double interest = 0.0;%>
+<%
+double amount=Double.parseDouble(request.getParameter("t1"));
+int year=Integer.parseInt(request.getParameter("t2"));
+if(year >=1 || year <=7)
+{
+interest=(amount*5.35)/100;
+out.println("Interest ="+interest);
+}else if(year>=8 || year <=15)
+{
+interest=(amount*5.5)/100;
+out.println("Interest ="+interest);
+}
+else if(year>=16||year<=30)
+{
+interest=(amount*5.75)/100;
+out.println(""+interest);
+}else{out.println("Year invalid...");
+}
+%>
+</body>
+</html>
+
+
+
+
+
+
