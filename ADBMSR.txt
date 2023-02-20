@@ -1,0 +1,278 @@
+----------------Introduction to R
+
+----------Numeric Data
+# Assign a decimal value to variable x
+x = 5.6
+# print the class name of variable x
+print(class(x))
+# print the type of variable x
+print(typeof(x))
+#is variabe x an integer
+print(is.integer(x)
+
+----------Integer Data
+# Declare an integer by appending ‘L’ as suffix.
+y = 5L
+# print the class name of y
+print(class(y))
+# print the type of y
+print(typeof(y))
+
+----------Logical type
+# Two variables
+x = 4
+y = 3
+# Comparing two values
+z = x > y
+# print the logical value
+print(z)
+# print the class name of z
+print(class(z))
+# print the type of z
+print(typeof(z))
+
+----------Complex type
+# Assign a complex value to variable x
+x = 4 + 3i
+# print the class name of variable x
+print(class(x))
+# print the type of variable x
+print(typeof(x))
+
+----------Character type
+# Assign a character value to char
+char = "Mumbai University"
+# print the class name of char
+print(class(char))
+# print the type of char
+print(typeof(char))
+
+
+----------------------------Read and write data
+##reading data
+mydata<-read.table("mydata.csv",sep = ",",header = T)
+mydata
+dim(mydata)
+head(mydata,2)
+tail(mydata,2)
+
+##reading data
+z <- data.frame(a = 10, b = 40, c = pi)
+write.csv(z, file = "sample.csv")
+
+
+----------------------------Data PreProcessing
+
+
+getwd()
+setwd("C:")
+mydata<-mtcars
+mydata
+head(mydata,5)
+
+library(dplyr)
+
+mydata1<-mydata[1:6,1:5]
+mydata1
+
+##renaming
+mydata2<-rename(mydata1,horsepower=hp)
+mydata2
+
+##addig new column
+mydata2$newhp1<-mydata2$horsepower*0.5
+colnames(mydata2)
+mydata2
+
+----------------------
+data2<-read.csv("missing_col1.csv",sep=",")
+data2
+data2<-read.csv("missing_col1.csv",col.names =
+                  c("SRNO","NAME","SALARY","DATEOFJOINING","DEPARTMENT"),sep=",")
+data2
+
+datac<-read.csv("nadata.csv",na.strings = " ")
+datac
+
+dataCompletecases<-datac[complete.cases(datac),]
+dataCompletecases
+
+#imputations
+x=c(1,2,3,NA,4,4,NA)
+x
+x<-impute(x, fun = mean)
+x
+x<-impute(x, fun = median)
+x
+
+#categorical data
+#converting character into factor
+gender_vector<-c("Male","Female","Female","Male","Male")
+class(gender_vector)
+factor_gender_vector<-factor(gender_vector)
+factor_gender_vector
+class(factor_gender_vector)
+
+#ordered=true
+day_vector<-c("evening","morning","afternoon","midday","midnight","evening")
+day_vector
+factor_day_vector<-factor(day_vector, ordered = TRUE, levels =
+                            c("morning","midday","afternoon","evening","midnight"))
+factor_day_vector
+class(factor_day_vector)
+
+#cut()
+age<-c(40,48,40,67,52,53)
+age
+salary<-c(12543,10582,15206,16060,10390,14070)
+salary
+gender<-c("male","female","transgender","female","male","female")
+gender
+employees<-data.frame(age,salary,gender)
+employees
+wfact<-cut(employees$age,3,labels=c("young","middleage","Aged"))
+table(wfact)
+
+----------------------------Linear Regression
+
+#Predictor vector
+x <- c(5.1,5.5,5.8,6.1,6.4,6.7,6.4,6.1,5.10,5.7)
+#Response vector
+y <- c(63,66,69,72,75,78,75,72,69,66)
+#Apply lm() function
+relation <- lm(y ~ x)
+summary(relation)
+
+#Find the weight of the person with height
+data <- data.frame(x=6.3)
+result<-predict(relation, data)
+print(result)
+
+mydata<-mtcars
+View(mtcars)
+names(mydata)
+
+mydata<-mydata[sample(nrow(mydata),),]
+head(mydata)
+
+TrainData<-mydata[1:20,]
+TestData<-mydata[21:32,]
+
+fit = lm(mpg ~ hp, data = mtcars)
+summary(fit)
+
+pred <- predict(fit, newdata = TestData)
+df1<-data.frame(pred,TestData$mpg)
+head(df1)
+
+cor(pred,TestData$mpg)
+plot(mtcars$hp, mtcars$mpg)
+
+ggplot(fit,aes(hp,mpg))+geom_point()+stat_smooth(method = lm,se = FALSE)+geom_segment(aes(xend=hp, yend= .fitted),color="red", size=0.3)
+
+
+----------------------------------Classification
+
+library(e1071)
+library("klaR")
+library("caret")
+
+data("iris")
+head(iris)
+unique(iris$Species)
+
+pairs(iris[1:4], main = "Iris Data(red = setosa, green = versicolor, blue = virginica)", pch = 21, bg =
+        c("red", "green", "blue") [unclass(iris$Species)])
+
+index = sample(nrow(iris),floor(nrow(iris)),floor(nrow(iris)*0.7))
+train = iris[index,]
+test=iris[-index,]
+
+XTrain = train[,-5]
+YTrain = train$Species
+XTestb = test[,-5]
+YTest = test$Species
+
+model = train(XTrain,YTrain,'nb',trControl = trainControl(method='cv',number=10))
+model
+
+prop.table(table(predict(model$finalModel,XTestb)$class,YTest))
+
+
+-----------------------K-Means
+
+data1<-iris
+data1
+head(iris)
+install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+geom_point()
+set.seed(20)
+irisCluster<-kmeans(iris[,3:4],3,nstart=20)
+irisCluster
+table(irisCluster$cluster,iris$Species)
+irisCluster$cluster<-as.factor(irisCluster$cluster)
+ggplot(iris,aes(Petal.Length,Petal.Width,color=irisCluster$cluster))+geom_point()
+
+--------------------Agglomerative:
+
+head(iris)
+View(iris)
+clusters<-hclust(dist(iris[,3:4]))
+plot(clusters)
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+clusters<-hclust(dist(iris[,3:4]),method = "average")
+plot(clusters)
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+geom_point(alpha=0.4,size=3.5)+geom_point(col=clustercut)+scale_color_manual(values=c('black','red','green'))
+
+#Agglomerative example
+head(iris)
+View(iris)
+clusters<-hclust(dist(iris[,3:4]))
+plot(clusters)
+
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+clusters<-hclust(dist(iris[,3:4]),method = 'complete')
+plot(clusters)
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+geom_point(alpha=0.4, size=3.5)+geom_point(col=clustercut)+scale_color_manual(values=c('black','red','green'))
+
+#Agglomerative example
+head(iris)
+View(iris)
+clusters<-hclust(dist(iris[,3:4]))
+plot(clusters)
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+
+clusters<-hclust(dist(iris[,3:4]),method = 'single')
+plot(clusters)
+clustercut <- cutree(clusters,3)
+table(clustercut,iris$Species)
+
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+geom_point(alpha=0.4,size=3.5)+geom_point(col=clustercut)+scale_color_manual(values=c('black','red','green'))
+
+
+------------------------------Apriori Algorithm
+
+getwd()
+setwd("C:")
+data1<-read.csv("data_apriori.csv")
+data1
+
+#Split data into column names and assign limit to transactions
+trans<-split(data1$Products,data1$Customer_Id,"transactions")
+head(trans)
+
+install.packages("arules")
+library(arules)
+#Assign rules and inspect the rules:
+rules=apriori(trans,parameter = list(support=0.5,confidence=0.9,maxlen=3,minlen=2))
+inspect(rules)
