@@ -2,310 +2,357 @@
 *****************************Sorting Algorithm********************************
 ----------------------------------------------------------------------------------------------------
 1) Bubble Sort
-#include <iostream>
+#include<iostream>
+
 using namespace std;
+
 int main()
 {
- int a[20],n;
- int i,j,temp;
-
- cout<<"****Bubble Sort****"<<endl<<endl;
- //Get the size of the array
- cout<<"Enter the size of the array: ";
- cin>>n;
- cout<<"Enter Elements in the array: "<<endl;
- for(i=0;i<n;i++)
- {
- cin>>a[i];
- }//end of for i
-
- //Bubble Sort
- for(i=0;i<n-1;i++)
- {
- for(j=i+1;j<n;j++)
- {
- if(a[i]>a[j])
- {
- temp=a[i];
-a[i]=a[j];
-a[j]=temp;
- } //end of if
- }//end of j
- }//end of i
-
- //Display the sorted array
- cout<<endl;
- cout<<"Sorted array: "<<endl;
- for(i=0;i<n;i++)
- {
- cout<<a[i]<<endl;
- }
-
-}//end of main
+	int a[20];
+	int n;
+	int i,j,tmp;
+	cout<<"*** Bubble Sort ***";
+	cout<<"Enter size of the array: ";
+	cin>>n;
+	cout<<"Enter elements in the array: ";
+	for(i=0; i<n; i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"Before Sorting: "<<endl;
+	for(i=0;i<n;i++)
+	{
+		cout<<a[i]<<" ";
+	}
+	
+	
+	//Bubble Sort
+	for(i=0; i<n-1; i++)
+	{
+		for(j=i+1; j<n; j++)
+		{
+			if(a[i]>a[j])
+			{
+				tmp = a[i];
+				a[i] = a[j];
+				a[j] = tmp;
+			}
+		}
+	}
+	
+	cout<<"\n\nAfter Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
+}
 ----------------------------------------------------------------------------------------------------
 2) Selection Sort
 #include<iostream>
+
 using namespace std;
+
 int main()
 {
-int n,arr[20];
-int i,j,loc,min,tmp;
-cout<<"****Selection Sort****"<<endl<<endl;
-cout<<"Enter the size of array: ";
-cin>> n;
-cout<< "Enter the element of the array:"<<endl;
-for(i=0;i<n;i++)
-{
-cin>>arr[i];
+	int n,a[20];
+	int i,j,tmp,min,loc;
+	cout<<"Selection Sort"<<endl;
+	cout<<"Enter size of the array: ";
+	cin>>n;
+	cout<<"Enter elements in the array: ";
+	for(i=0; i<n; i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"Before Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
+	
+	//min and loc
+	for(i=0; i<n-1; i++)
+	{
+		min = a[i];
+		loc = i;
+		for(j=i+1; j<n; j++)
+		{
+			if(a[j]<min)
+			{
+				min = a[j];
+				loc = j;
+			}
+		}
+		//Swap i and loc
+		tmp = a[i];
+		a[i] = min;
+		a[loc] = tmp;
+	}
+	cout<<"\n\nAfter Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
 }
-//selection Sort
-for(i=0;i<n;i++)
-{
-min=arr[i];
-loc=i;
-for(j=i+1;j<n;j++)
-{
-if(arr[j]<min)
-{
-min=arr[j];
-loc=j;
-}
-}//end of j
-//found the smallest value and its loc at min and loc
-//swap
-tmp=arr[i];
-arr[i]=arr[loc];
-arr[loc]=tmp;
-}//end of i
-//display
-cout<<endl<<"sorted Array:"<<endl;
-for(i=0;i<n;i++)
-{
-cout<<arr[i]<<endl;
-}
-}// end of main
 ----------------------------------------------------------------------------------------------------
 3) Insertion Sort
 #include<iostream>
+
 using namespace std;
+
 int main()
 {
-int n,arr[20];
-int i,temp,loc;
-cout<<"***Insertion Sort***\n\n";
-cout<<"Enter Size of Array:";
-cin>>n;
-cout<<"Enter Elements of the array:\n";
-for(i=0;i<n;i++)
-{
-cin>>arr[i];
-}
-//Insertion Sort
-for(i=1;i<n;i++)
-{
-temp=arr[i];
-loc=i-1;
-while(temp<arr[loc] && loc>=0)
-{
-arr[loc+1]=arr[loc];
-loc--;
-}
-arr[loc+1]=temp;
-}//end of i
-cout<< endl << endl << "Sorted Array: ";
-for(i=0;i<n;i++)
-{
-cout<< arr[i] << " ";
-}
+	int n,a[20];
+	int i,loc,tmp;
+	cout<<"Insertion Sort"<<endl;
+	cout<<"Enter size of the array: "<<endl;
+	cin>>n;
+	cout<<"Enter elements in the array: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"Before Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
+	//Insertion sort
+	for(i=1; i<n; i++)
+	{
+		tmp = a[i];
+		loc = i-1;
+		while(tmp<a[loc] && loc>=0)
+		{
+			a[loc+1] = a[loc];
+			loc--;
+		}
+		a[loc+1] = tmp;
+	}
+	
+	cout<<"\n\nAfter Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
 }
 ----------------------------------------------------------------------------------------------------
 4) Shell Sort
 #include<iostream>
 #include<math.h>
+
 using namespace std;
+
 int main()
 {
-int n,arr[20],i,gap,extractData,loc;
-cout<<"***Shell Sort***"<<endl<<endl;
-cout<<"Enter the size of array:";
-cin>>n;
-cout<<"Enter elements in array"<<endl;
-for(i=0;i<n;i++)
-{
-cin>>arr[i];
+	int n,a[20];
+	int i,gap,loc,extractData;
+	cout<<"Shell Sort"<<endl;
+	cout<<"Enter size of the array: "<<endl;
+	cin>>n;
+	cout<<"Enter elements in the array: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"Before Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
+	//Shell sort
+	gap=floor(n/2);
+	while(gap>0)
+	{
+		for(i=0; i<n-gap; i++)
+		{
+			extractData = a[i+gap];
+			loc = i+gap;
+			while((loc-gap)>=0 && extractData<a[loc-gap])
+			{
+				a[loc] = a[loc-gap];
+				loc = loc-gap;
+			}
+			a[loc] = extractData;
+		}
+		gap = floor(gap/2);
+	}
+	
+	cout<<"\n\nAfter Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<a[i]<<" ";
+	}
 }
-gap=floor(n/2);
-while(gap>0)
-{
-for(i=0;i<n-gap;i++)
-{
-extractData=arr[i+gap];
-loc=i+gap;
-while((loc-gap)>=0 && extractData<arr[loc-gap])
-{
-arr[loc]=arr[loc-gap];
-loc=loc-gap;
-}
-arr[loc]=extractData;
-}//end of for i
-gap=floor(gap/2);
-}//end of while gap
-cout<< endl << endl << "Sorted Array: ";
-for(i=0;i<n;i++)
-{
-cout<< arr[i] << " ";
-}
-}//end of main
 ----------------------------------------------------------------------------------------------------
 5)Radix Sort
-#include <iostream>
+#include<iostream>
+
 using namespace std;
+
 int main()
 {
-int n,i,arr[20];
-int passes=0;
-int max,j,r,x,k;
-int bucket[10][20],b_count[10];
-cout<<"***Radix sort***"<<endl;
-cout<<"enter the size of array:"<<endl<<endl;
-cin>>n;
-cout<<"enter element in array:"<<endl<<endl;
-for(i=0;i<n;i++)
-{
-cin>>arr[i];
+	int i,j,n,r,k,p,arr[20];
+	int max,passes = 0;
+	int bucket[10][20];
+	int b_count[10];
+	int divisor = 1;
+	cout<<"Radix Sort"<<endl;
+	cout<<"Enter size of the array: "<<endl;
+	cin>>n;
+	cout<<"Enter elements in the array: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cin>>arr[i];
+	}
+	cout<<"Before Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<arr[i]<<" ";
+	}
+	
+	//Find maximum element
+	max = arr[0];
+	for(i=1; i<n; i++)
+	{
+		if(arr[i]>max)
+		{
+			max = arr[i];
+		}
+	}
+	
+	//Find the number of digits
+	while(max>0)
+	{
+		passes++;
+		max = max/10;
+	}
+	
+	//Radix Sort
+	for(p=1; p<=passes; p++)
+	{
+		//Inititalize b_count to 0
+		for(k=0; k<10; k++)
+		{
+			b_count[k] = 0;
+		}
+		
+		//Extract digit, Place in bin, b_count increment
+		for(i=0; i<n; i++)
+		{
+			r = (arr[i]/divisor)%10;
+			bucket[r][b_count[r]] = arr[i];
+			b_count[r]++;
+		}
+		
+		//Collect the bins
+		i = 0;
+		for(j=0; j<10; j++)
+		{
+			for(k=0; k<b_count[j]; k++)
+			{
+				arr[i] = bucket[j][k];
+				i++;
+			}//end of k
+		}//end of j
+		divisor = divisor * 10;
+	}//end of p
+	cout<<"\n\nAfter Sorting: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cout<<arr[i]<<" ";
+	}	
 }
-//identify
-max=arr[0];
-for(i=0; i<n; i++)
-{
-if(arr[i]>max)
-{
-max=arr[i];
-}//end of if
-}//end of i
-//count the number of digit in max number
-while(max>0)
-{
-passes++;
-max=max/10;
-}
-//radix sort
-int divisor=1;
-for(x=1; x<=passes; x++)
-{
-//1.initialize the b_count
-for(k=0;k<10;k++)
-{
-b_count[k]=0;
-}
-//2.check digit and place in bin,update b_count
-for(i=0;i<n;i++)
-{
-r=(arr[i]/divisor)%10;
-bucket[r][b_count[r]]=arr[i];
-b_count[r]++;
-}
-//3.collect the bins
-i=0;
-for(k=0; k<10 ;k++)
-{
-for(j=0; j<b_count[k] ;j++)
-{
-arr[i]=bucket[k][j];
-i++;
-}//end ofj
-}//end of k
-divisor=divisor*10;
-}//end of x
-cout<<endl<<endl;
-cout<<"sorted array";
-for(i=0; i<n;i++)
-{
-cout<<arr[i]<<" ";
-}
-}//end of main
 ----------------------------------------------------------------------------------------------------
 Searching Algorithum
 ----------------------------------------------------------------------------------------------------
 1)Binary Search
 #include<iostream>
+#include<math.h>
+
 using namespace std;
+
 int main()
 {
-int n,arr[20],key;
-int i;
-int first,last,mid,flag=0;
-cout<<"***Binary Search***"<<endl<<endl;
-cout<<"Enter size of array:"<<endl;
-cin>>n;
-cout<<"Enter the element in sorted array: "<<endl;
-for(i==0 ;i<n ;i++)
-{
-cin>>arr[i];
+	int i,arr[20],n,target;
+	int first,mid,last,flag;
+	cout<<"Binary Search"<<endl;
+	cout<<"Enter size of the array: "<<endl;
+	cin>>n;
+	cout<<"Enter elements in the array: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cin>>arr[i];
+	}
+	cout<<"Enter value to search: "<<endl;
+	cin>>target;
+	flag=0;
+	first=0;
+	last=n-1;
+	while(first<=last)
+	{
+		mid = floor(first+last)/2;
+		if(target<arr[mid])
+		{
+			last = mid-1;
+		}
+		else if(target>arr[mid])
+		{
+			first = mid+1;
+		}
+		else
+		{
+			flag=1;
+			break;
+		}	
+	}
+	if(flag==1)
+	{
+		cout<<"\nTarget found at index: "<<mid;
+	}
+	else
+	{
+		cout<<"\nTarget not found!";
+	}
 }
-cout<<"Enter the key:"<<endl;
-cin>>key;
-first=0;
-last=n-1;
-while(first<=last)
-{
-mid=(first+last)/2;
-if(key< arr[mid])
-{
-last=mid-1;
-}
-else if(key>arr[mid])
-{
-first=mid+1;
-}
-else //key is found!
-{
-flag=1;
-break;
-}
-}//end of while
-if(flag==1)
-{
-cout<<"key "<<key<<" is found at index "<<mid<<endl;
-}
-else
-{
-cout<<"key "<<key<<" is not found";
 }
 ----------------------------------------------------------------------------------------------------
 2)Linear Search/Sequential Search
 #include<iostream>
+
 using namespace std;
+
 int main()
 {
-int n,arr[20],key;
-int i,flag=0;
-cout<<"Linear Search"<<endl<<endl;
-cout<<"Enter the size of the array"<<endl<<endl;
-cin>>n;
-cout<<"Enter the element:"<<endl<<endl;
-for(i=0; i<n; i++)
-{
-cin>> arr[i];
-}
-cout<<"Enter the target value"<<endl;
-cin>>key;
-for(i=0; i<n;i++)
-{
-if(arr[i]==key)
-{
-flag=1;
-break;
-}
-}//end of i
-if(flag==1)
-{
-cout<<"Target value "<<key<<"is found at index "<<i;
-}
-else
-{
-cout<<"Target value is not found";
-}
+	int i,target,n,flag;
+	int arr[20];
+	cout<<"Linear Search"<<endl;
+	cout<<"Enter size of the array: "<<endl;
+	cin>>n;
+	cout<<"Enter elements in the array: "<<endl;
+	for(i=0; i<n; i++)
+	{
+		cin>>arr[i];
+	}
+	cout<<"Enter value to search: "<<endl;
+	cin>>target;
+	flag=0;
+	for(i=0; i<n; i++)
+	{
+		if(arr[i] == target)
+		{
+			flag=1;
+			break;
+		}
+	}
+	if(flag==1)
+	{
+		cout<<"\nTarget found at index: "<<i;
+	}
+	else
+	{
+		cout<<"\nTarget not found!";
+	}
 }
 ----------------------------------------------------------------------------------------------------Linked List
 ----------------------------------------------------------------------------------------------------
